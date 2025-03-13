@@ -2,6 +2,7 @@ package main;
 import factory.MapFactory;
 import model.Pokemon;
 import service.PokemonService;
+import service.CSVReader;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -16,6 +17,7 @@ public class Main {
         scanner.nextLine();
 
         Map<String, Pokemon> pokemonMap = MapFactory.createMap(choice);
+        CSVReader.loadPokemonData("pokemon_data_pokeapi.csv", pokemonMap); // Carga el CSV
         PokemonService service = new PokemonService(pokemonMap);
 
         // Menú
