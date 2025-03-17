@@ -4,18 +4,20 @@ import java.util.*;
 
 public class PokemonService {
     private Map<String, Pokemon> pokemonMap;
-    private Set<Pokemon> userCollection;
+    private List<Pokemon> userCollection;
 
     public PokemonService(Map<String, Pokemon> pokemonMap) {
         this.pokemonMap = pokemonMap;
-        this.userCollection = new HashSet<>();
+        this.userCollection = new LinkedList<>();
     }
 
     public void addPokemonToUserCollection(String name) {
         if (!pokemonMap.containsKey(name)) {
             throw new IllegalArgumentException("Pokemon no encontrado.");
         }
-        if (!userCollection.add(pokemonMap.get(name))) {
+        if (!userCollection.contains(pokemonMap.get(name))) {
+            userCollection.add(pokemonMap.get(name));
+        } else {
             System.out.println("El pokemon ya está en la colección.");
         }
     }
@@ -25,19 +27,19 @@ public class PokemonService {
     }
 
     public List<Pokemon> getPokemonsSortedByType() {
-        List<Pokemon> list = new ArrayList<>(userCollection);
+        List<Pokemon> list = new LinkedList<>(userCollection);
         list.sort(Comparator.comparing(Pokemon::getType1));
         return list;
     }
 
     public List<Pokemon> getAllPokemonsSortedByType() {
-        List<Pokemon> list = new ArrayList<>(pokemonMap.values());
+        List<Pokemon> list = new LinkedList<>(pokemonMap.values());
         list.sort(Comparator.comparing(Pokemon::getType1));
         return list;
     }
 
     public List<Pokemon> getPokemonsByAbility(String ability) {
-        List<Pokemon> result = new ArrayList<>();
+        List<Pokemon> result = new LinkedList<>();
         for (Pokemon p : pokemonMap.values()) {
             if (p.getAbility().equalsIgnoreCase(ability)) {
                 result.add(p);
