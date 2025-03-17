@@ -1,4 +1,5 @@
 package main;
+
 import factory.MapFactory;
 import model.Pokemon;
 import service.PokemonService;
@@ -9,13 +10,23 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        int choice = 0;
 
         // Selección de la implementación del Map
-        System.out.println("Seleccione la implementación de MAP:");
-        System.out.println("1) HashMap \n2) TreeMap \n3) LinkedHashMap");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        while (true) {
+            try {
+                System.out.println("Seleccione la implementación de MAP:");
+                System.out.println("1) HashMap \n2) TreeMap \n3) LinkedHashMap");
+                choice = Integer.parseInt(scanner.nextLine());
 
+                if (choice >= 1 && choice <= 3) break;
+                else System.out.println("Opción inválida. Intente de nuevo.");
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada no válida. Ingrese un número del 1 al 3.");
+            }
+        }
+
+        // Creación del Map según la elección del usuario
         Map<String, Pokemon> pokemonMap = MapFactory.createMap(choice);
         CSVReader.loadPokemonData("pokemon_data_pokeapi.csv", pokemonMap); // Carga el CSV
         PokemonService service = new PokemonService(pokemonMap);
@@ -29,8 +40,15 @@ public class Main {
             System.out.println("4) Mostrar todos los Pokémon ordenados por tipo");
             System.out.println("5) Buscar Pokémon por habilidad");
             System.out.println("6) Salir");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            System.out.print("Seleccione una opción: ");
+
+            int option;
+            try {
+                option = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada no válida. Intente de nuevo.");
+                continue;
+            }
 
             switch (option) {
                 case 1:
@@ -67,9 +85,10 @@ public class Main {
                     break;
                 case 6:
                     System.out.println("Saliendo...");
+                    scanner.close(); // Cierra el scanner antes de salir
                     return;
                 default:
-                    System.out.println("Opción inválida.");
+                    System.out.println("Opción inválida. Intente de nuevo.");
             }
         }
     }
