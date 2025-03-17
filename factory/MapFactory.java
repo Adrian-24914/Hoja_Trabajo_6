@@ -1,11 +1,9 @@
 package factory;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import model.Pokemon;
+import java.util.*;
 
-public class MapFactory{
-    public static Map<String, String> createMap(int type) {
+public class MapFactory {
+    public static Map<String, Pokemon> createMap(int type) {
         switch (type) {
             case 1: return new HashMap<>();
             case 2: return new TreeMap<>();
@@ -14,3 +12,4 @@ public class MapFactory{
         }
     }
 }
+
